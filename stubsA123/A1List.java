@@ -22,32 +22,61 @@ public class A1List extends List {
 
     public A1List Insert(int address, int size, int key)
     {
-        return null;
+        A1List new_node=new A1List(address,size,key);
+        new_node.next=this.next;
+        this.next=new_node;
+        new_node.prev=this;
+        return new_node;
     }
 
     public boolean Delete(Dictionary d) 
     {
+        if(this.key==d.key){
+            
+        }
+        
+        A1List head_node=
+
+        while(this!=null){
+            if(this.key==d.key){
+                
+            }
+        }
         return false;
     }
 
     public A1List Find(int k, boolean exact)
     { 
+
         return null;
     }
 
     public A1List getFirst()
     {
-        return null;
+        if(this.prev==null){
+            return this;
+        }
+        A1List temp_prev=this.prev;
+        while(temp_prev!=null){
+            temp_prev=temp_prev.prev;
+        }
+        return temp_prev;
     }
     
     public A1List getNext() 
     {
-        return null;
+        return this.next;
     }
 
     public boolean sanity()
     {
         return true;
+    }
+    public static void main(String[] args) {
+        A1List test=new A1List(112233,10,1);
+        test.Insert(112234, 20, 2);
+        System.out.println(test.next.key);
+
     }
 
 }
