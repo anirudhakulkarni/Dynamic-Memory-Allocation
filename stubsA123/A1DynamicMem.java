@@ -24,10 +24,32 @@ public class A1DynamicMem extends DynamicMem {
     // Test your memory allocator thoroughly using Doubly Linked lists only (A1List.java).
 
     public int Allocate(int blockSize) {
+        Dictionary loc=this.freeBlk.Find(blockSize, true);
+        if(loc!=null){
+            this.allocBlk.Insert(loc.address, loc.size, loc.address);
+            this.freeBlk.Delete(loc);
+            return loc.address;
+        }
+        else{
+            loc=this.freeBlk.Find(blockSize, false);
+            if(loc!=null){
+                this.allocBlk.Insert(loc.address, blockSize, loc.address);
+                this.freeBlk.Insert(loc.address+blockSize, loc.size-blockSize, loc.size-blockSize);
+                this.freeBlk.Delete(loc);
+                return loc.address;
+            }
+        }
+    
         return -1;
     } 
     
     public int Free(int startAddr) {
+        Dictionary loc=this.allocBlk.Find(startAddr, true);
+        if(loc!=null){
+            this.freeBlk.Insert(loc.address, loc.size, loc.key);
+            this.allocBlk.Delete(loc);
+            return 0;
+        }
         return -1;
     }
 }

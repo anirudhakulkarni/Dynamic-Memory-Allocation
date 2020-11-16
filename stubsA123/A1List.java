@@ -170,9 +170,8 @@ public class A1List extends List {
         test.Insert(112234, 20, 1);
         test.Insert(112234, 20, 2);
         test.Insert(112234, 20, 3);
-        Dictionary a=new A1List(112234,20,2);
-        test.Delete(a);
-        test.Insert(112234, 20, 4);
+        Dictionary a=new A1List(112234,20,3);
+        test.next.Delete(a);
         while(!test.isTailsent(test)){
         //System.out.println("getFirst = "+test.getFirst().key);
         //System.out.println("getNext = "+test.getNext().key);
