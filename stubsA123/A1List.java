@@ -115,7 +115,31 @@ public class A1List extends List {
 
     public boolean sanity()
     {
-        
+        A1List currentb=this;
+        A1List currentf=this;
+        if(isCycle(this)){
+            return false;
+        }
+        //traverse till head sentinal and check if node.prev.next=node
+        while(!isHeadsent(currentb)){
+            if(currentb.prev.next!=currentb){
+                return false;
+            }
+            currentb=currentb.prev;
+        }
+        while(!isTailsent(currentf)){
+            if(currentf.next.prev!=currentf){
+                return false;
+            }
+            currentb=currentb.prev;
+        }
+        if(currentb.prev!=null){
+            return false;
+        }
+        if(currentf.next!=null){
+            return false;
+        }
+
         return true;
     }
     private boolean isHeadsent(A1List testnode){
@@ -133,14 +157,28 @@ public class A1List extends List {
         }
         return false;
     }
+    private boolean isCycle(A1List current){
+        A1List current2=current;
+//remaining//
+        return false;
+    }
     //MAKE SURE TO DELETE MAIN FUNCTION BEFORE SUBMITTING
     public static void main(String[] args) {
         A1List test=new A1List();
         System.out.println("getFirst = "+test.getFirst());
         System.out.println("getNext = "+test.getNext());
+        test.Insert(112234, 20, 1);
         test.Insert(112234, 20, 2);
-        System.out.println("getFirst = "+test.getFirst().key);
-        System.out.println("getNext = "+test.getNext().key);
+        test.Insert(112234, 20, 3);
+        Dictionary a=new A1List(112234,20,2);
+        test.Delete(a);
+        test.Insert(112234, 20, 4);
+        while(!test.isTailsent(test)){
+        //System.out.println("getFirst = "+test.getFirst().key);
+        //System.out.println("getNext = "+test.getNext().key);
+        System.out.println("This = "+test.key);
+        test=test.next;
+        }
         System.out.println(test.key);
     }
 
