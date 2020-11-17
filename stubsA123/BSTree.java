@@ -20,7 +20,17 @@ public class BSTree extends Tree {
 
     public BSTree Insert(int address, int size, int key) 
     { 
-        return null;
+        BSTree new_node=new BSTree(address,size,key);
+        if(this.key>key){
+            this.right=new_node;
+            new_node.parent=this;
+            return new_node;
+        }
+        else{
+            this.left=new_node;
+            new_node.parent=this;
+            return new_node;
+        }
     }
 
     public boolean Delete(Dictionary e)
@@ -30,6 +40,15 @@ public class BSTree extends Tree {
         
     public BSTree Find(int key, boolean exact)
     { 
+        if(exact==true){
+            if(this.key==key){
+                return this;
+            }
+            
+        }
+        if(exact==false){
+
+        }
         return null;
     }
 

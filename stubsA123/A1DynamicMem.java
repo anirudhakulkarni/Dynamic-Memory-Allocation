@@ -60,7 +60,8 @@ public class A1DynamicMem extends DynamicMem {
     public int Free(int startAddr) {
         Dictionary loc=this.allocBlk.Find(startAddr, true);
         if(loc!=null){
-            this.freeBlk.Insert(loc.address, loc.size, loc.key);
+            this.freeBlk.Insert(loc.address, loc.size, loc.size);
+            //System.out.println("Freed and added size "+loc.size);
             this.allocBlk.Delete(loc);
             return 0;
         }

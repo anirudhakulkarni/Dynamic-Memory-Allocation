@@ -64,10 +64,14 @@ public class A1List extends List {
         }
         if(exact==false){
             A1List current=this;
+             //System.out.println(current.next.size);
             while(!isTailsent(current)){
                 if(current.key>=k){
                     return current;
                 }
+                //System.out.println("INNER "+current.address);
+               //System.out.println("Inner "+current.key);
+                //System.out.println("Inner "+current.size);
                 current=current.next;
             }
             current=this;
@@ -77,6 +81,8 @@ public class A1List extends List {
                 }
                 current=current.prev;
             }
+            //debug
+            //System.out.println("searching k "+k+" current address,data"+current.address+" "+current.size );
             return null;
         }
         return null;
