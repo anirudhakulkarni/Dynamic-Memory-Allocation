@@ -39,6 +39,9 @@ public class A1DynamicMem extends DynamicMem {
                 return loc.address;
             }
         }*/
+        if(blockSize<=0){
+            return -1;
+        }
         Dictionary loc=this.freeBlk.Find(blockSize, false);
         if(loc!=null){
             if(loc.size==blockSize){
