@@ -3,7 +3,7 @@
 16:34:45 17-11-2020
 '''
 import numpy as np
-f = open("new_random.txt", "w")
+f = open("test16.txt", "w")
 f.write("200\n")
 for tests in range(1,201):
     arr = np.array(np.random.choice(tests*10, tests*100)) #Max Limit, Test cases
@@ -15,4 +15,3 @@ for tests in range(1,201):
             f.write("Allocate "+str(arr[i]) +"\n")
         else:
             f.write("Free "+str(arr[i]) + "\n")
-    print(tests)

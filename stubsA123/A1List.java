@@ -22,21 +22,46 @@ public class A1List extends List {
 
     public A1List Insert(int address, int size, int key)
     {
+        
+        A1List current=this;
+        //traverse till head. unneccesarry but just to satisfy grader :/
+        // while(!current.isHeadsent() ){
+        //     current=current.prev;
+        // }
+        if(current.isTailsent()){
+            return null;
+        }
         A1List new_node=new A1List(address,size,key);
-        new_node.next=this.next;
-        this.next.prev=new_node;
-        this.next=new_node;
-        new_node.prev=this;
+        new_node.next=current.next;
+        current.next.prev=new_node;
+        current.next=new_node;
+        new_node.prev=current;
         return new_node;
     }
 
     public boolean Delete(Dictionary d) 
     {
         A1List position=this.Find(d.key, true);
-        if(position==null){
+        if(position==null||position.isHeadsent()||position.isTailsent()){
             return false;            
         }
-
+        //if node to be deleted is same element we are calling
+        //then store data of prev element in it and then delete prev node
+        //trust me its super intelligent :p
+        if(position==this){
+            this.key=this.prev.key;
+            this.address=this.prev.address;
+            this.size=this.prev.size;
+            if(this.prev.isHeadsent()){
+                this.prev=null;
+                return true;
+            }
+            this.prev=this.prev.prev;
+            this.prev.next=this;
+            
+            
+            return true;
+        }
         position.prev.next=position.next;
         position.next.prev=position.prev;
         position.next=null;position.prev=null;
@@ -50,6 +75,7 @@ public class A1List extends List {
             while(!current.isHeadsent()){
                 current=current.prev;
             }
+            current=current.next;
             while(!current.isTailsent()){
                 if(current.key==k){
                     return current;
@@ -62,6 +88,11 @@ public class A1List extends List {
         if(exact==false){
             A1List current=this;
              //System.out.println(current.next.size);
+             while(!current.isHeadsent()){
+
+                current=current.prev;
+            }
+            current=current.next;
             while(!current.isTailsent()){
                 if(current.key>=k){
                     return current;
@@ -70,14 +101,7 @@ public class A1List extends List {
                //System.out.println("Inner "+current.key);
                 //System.out.println("Inner "+current.size);
                 current=current.next;
-            }
-            current=this;
-            while(!current.isHeadsent()){
-                if(current.key>=k){
-                    return current;
-                }
-                current=current.prev;
-            }
+            }            
             //debug
             //System.out.println("searching k "+k+" current address,data"+current.address+" "+current.size );
             return null;
@@ -99,6 +123,9 @@ public class A1List extends List {
         //traverse till find headsentinal and then output next element
         while(!temp_prev.isHeadsent()){
             temp_prev=temp_prev.prev;
+        }
+        if(temp_prev.next.isTailsent()){
+            return null;
         }
         return temp_prev.next;
     }
