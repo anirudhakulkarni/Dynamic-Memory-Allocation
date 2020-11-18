@@ -2,7 +2,7 @@
 @anirudha
 12:26:55 17-11-2020
 '''
-choose=input("Original [press 0] or New [press 1]?")
+choose=int(input("Original [press 0] or New [press 1]?"))
 if(choose==1):
   filename1 = input("input file: ") 
   filename2 = input("Output file: ") 

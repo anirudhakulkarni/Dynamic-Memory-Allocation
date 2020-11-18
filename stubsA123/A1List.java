@@ -47,25 +47,22 @@ public class A1List extends List {
     {
         if(exact==true){
             A1List current=this;
-            while(!isTailsent(current)){
+            while(!current.isHeadsent()){
+                current=current.prev;
+            }
+            while(!current.isTailsent()){
                 if(current.key==k){
                     return current;
                 }
                 current=current.next;
             }
-            current=this;
-            while(!isHeadsent(current)){
-                if(current.key==k){
-                    return current;
-                }
-                current=current.prev;
-            }
+            
             return null;
         }
         if(exact==false){
             A1List current=this;
              //System.out.println(current.next.size);
-            while(!isTailsent(current)){
+            while(!current.isTailsent()){
                 if(current.key>=k){
                     return current;
                 }
@@ -75,7 +72,7 @@ public class A1List extends List {
                 current=current.next;
             }
             current=this;
-            while(!isHeadsent(current)){
+            while(!current.isHeadsent()){
                 if(current.key>=k){
                     return current;
                 }
@@ -100,7 +97,7 @@ public class A1List extends List {
             temp_prev=this.next;    
         }
         //traverse till find headsentinal and then output next element
-        while(!isHeadsent(temp_prev)){
+        while(!temp_prev.isHeadsent()){
             temp_prev=temp_prev.prev;
         }
         return temp_prev.next;
@@ -110,10 +107,10 @@ public class A1List extends List {
     {
         // If the element is the last element of DLL then we should return null instead of tail sentinal node
         // Assume: No tail sentinal is given as input. if given return null
-        if(this==null || isTailsent(this)){
+        if(this==null || this.isTailsent()){
             return null;
         }
-        if(isTailsent(this.next)){
+        if(this.next.isTailsent()){
             return null;
         }
         return this.next;
@@ -127,13 +124,13 @@ public class A1List extends List {
             return false;
         }
         //traverse till head sentinal and check if node.prev.next=node
-        while(!isHeadsent(currentb)){
+        while(!currentb.isHeadsent()){
             if(currentb.prev.next!=currentb){
                 return false;
             }
             currentb=currentb.prev;
         }
-        while(!isTailsent(currentf)){
+        while(!currentf.isTailsent()){
             if(currentf.next.prev!=currentf){
                 return false;
             }
@@ -148,17 +145,20 @@ public class A1List extends List {
 
         return true;
     }
-    private boolean isHeadsent(A1List testnode){
-        if(testnode==null){
+    private boolean isHeadsent(){
+        if(this==null){
             return false;
         }
-        if(testnode.address==-1 && testnode.size==-1 && testnode.key==-1 &&testnode.prev==null){
+        if(this.address==-1 && this.size==-1 && this.key==-1 &&this.prev==null){
             return true;
         }
         return false;
     }
-    private boolean isTailsent(A1List testnode){
-        if(testnode.address==-1 && testnode.size==-1 && testnode.key==-1 &&testnode.next==null){
+    private boolean isTailsent(){
+        if(this==null){
+            return false;
+        }
+        if(this.address==-1 && this.size==-1 && this.key==-1 &&this.next==null){
             return true;
         }
         return false;
@@ -178,7 +178,7 @@ public class A1List extends List {
         test.Insert(112234, 20, 3);
         Dictionary a=new A1List(112234,20,3);
         test.next.Delete(a);
-        while(!test.isTailsent(test)){
+        while(!test.isTailsent()){
         //System.out.println("getFirst = "+test.getFirst().key);
         //System.out.println("getNext = "+test.getNext().key);
         System.out.println("This = "+test.key);
