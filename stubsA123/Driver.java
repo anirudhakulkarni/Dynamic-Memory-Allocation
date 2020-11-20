@@ -9,6 +9,9 @@ public class Driver{
             size = sc.nextInt();
             A1DynamicMem obj = new A1DynamicMem(size);
             int numCommands = sc.nextInt();
+            //testing purpose
+            //int origNum = numCommands;
+            //
             while(numCommands-->0) {
                 String command;
                 command = sc.next();
@@ -26,6 +29,9 @@ public class Driver{
                         break;
                 }
                 System.out.println(result);
+
+                //for testing
+                //if(origNum - numCommands < 700) {System.out.println(origNum - numCommands);obj.printBlk();}
             }
             
         }

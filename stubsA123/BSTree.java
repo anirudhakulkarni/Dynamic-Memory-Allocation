@@ -103,9 +103,7 @@ public class BSTree extends Tree {
         if(this==null){
             return null;
         }
-        if(!this.isSentinal()){
-            return this.parent.getFirst();
-        }
+        BSTree current=this;
         return null;
 
     }

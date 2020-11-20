@@ -19,6 +19,27 @@ public class A1DynamicMem extends DynamicMem {
     public void Defragment() {
         return ;
     }
+    // uncommment this to print contents of the lists
+    // public void printBlk(){
+    //     System.out.print("\nfreeBlk is : ");
+    //     Dictionary first = this.freeBlk.getFirst();
+    //     while(first!=null){
+    //       System.out.print(" ("+first.address+", "+first.size+") ");
+    //       if(this.freeBlk==first) System.out.print(" <-- ");
+    //       first = first.getNext();
+    //     }
+  
+    //     System.out.print("\nallocBlk is : ");
+    //     first = this.allocBlk.getFirst();
+    //     while(first!=null){
+    //       System.out.print(" ("+first.address+", "+first.size+") ");
+    //       if(this.allocBlk==first) System.out.print(" <-- ");
+    //       first = first.getNext();
+    //     }
+    //     System.out.print("\n");
+    //   }
+
+
 
     // In A1, you need to implement the Allocate and Free functions for the class A1DynamicMem
     // Test your memory allocator thoroughly using Doubly Linked lists only (A1List.java).

@@ -24,7 +24,8 @@ public class A1List extends List {
     {
         
         A1List current=this;
-        //traverse till head. unneccesarry but just to satisfy grader :/
+        //traverse till head. Uncomment this if clarification comes that we have to insert at head only irrespective of node on which it is called
+        //finally 
         // while(!current.isHeadsent() ){
         //     current=current.prev;
         // }
