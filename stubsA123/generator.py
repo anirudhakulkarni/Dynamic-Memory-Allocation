@@ -7,7 +7,7 @@ upperlimit=2000
 commands=500000
 memory_size=1000000
 arr = np.array(np.random.choice(upperlimit, commands))
-f = open("1myfile.txt", "w")
+f = open("test17.txt", "w")
 f.write("1\n")
 f.write(str(memory_size)+"\n")
 f.write(str(commands)+"\n")

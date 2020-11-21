@@ -42,7 +42,21 @@ public class A1List extends List {
 
     public boolean Delete(Dictionary d) 
     {
-        A1List position=this.Find(d.key, true);
+        A1List position=null;
+        A1List current=this;
+            while(!current.isHeadsent()){
+                current=current.prev;
+            }
+            current=current.next;
+            while(!current.isTailsent()){
+                if(current.key==d.key &&current.size==d.size && current.address==d.address){
+                    position=current;
+                    break;
+                }
+                current=current.next;
+        }
+
+        //A1List position=this.Find(d.key, true);
         if(position==null||position.isHeadsent()||position.isTailsent()){
             return false;            
         }
@@ -148,54 +162,79 @@ public class A1List extends List {
     {
         A1List currentb=this;
         A1List currentf=this;
+        //checks cycle
         if(isCycle(this)){
             return false;
         }
-        //traverse till head sentinal and check if node.prev.next=node
-        while(!currentb.isHeadsent()){
+        //traverse till head and check if node.prev.next=node
+        while(currentb.prev!=null){
             if(currentb.prev.next!=currentb){
                 return false;
             }
             currentb=currentb.prev;
         }
-        while(!currentf.isTailsent()){
+        //traverse till tail and check if node.prev.next=node
+        
+        while(currentf.next!=null){
             if(currentf.next.prev!=currentf){
                 return false;
             }
-            currentb=currentb.prev;
+            currentf=currentf.next;
         }
-        if(currentb.prev!=null){
+        //checks if data of first element is -1 also with prev=null, so as to be a head sentinel
+        if(!currentb.isHeadsent()){
             return false;
         }
-        if(currentf.next!=null){
+        //checks if data of last element is -1 also with next=null, so as to be a tail sentinel
+        if(!currentf.isTailsent()){
             return false;
         }
 
         return true;
     }
     private boolean isHeadsent(){
-        if(this==null){
-            return false;
-        }
+        // if(this==null){
+        //     return false;
+        // }
         if(this.address==-1 && this.size==-1 && this.key==-1 &&this.prev==null){
             return true;
         }
         return false;
     }
     private boolean isTailsent(){
-        if(this==null){
-            return false;
-        }
+        // if(this==null){
+        //     return false;
+        // }
         if(this.address==-1 && this.size==-1 && this.key==-1 &&this.next==null){
             return true;
         }
         return false;
     }
     private boolean isCycle(A1List current){
+        A1List current1=current;
         A1List current2=current;
+        while(current2!=null && current2.next!=null &&current1!=null){
+            current1=current1.next;
+            current2=current2.next.next;
+            if(current1==current2){
+                return true;
+            }
+        }
+        current1=current;
+        current2=current;
+        while(current2!=null && current2.prev!=null &&current1!=null){
+            current1=current1.prev;
+            current2=current2.prev.prev;
+            if(current1==current2){
+                return true;
+            }
+        }
 //remaining//
         return false;
     }
+
+
+
     //MAKE SURE TO DELETE MAIN FUNCTION BEFORE SUBMITTING
     public static void main(String[] args) {
         A1List test=new A1List();

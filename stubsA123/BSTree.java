@@ -34,24 +34,24 @@ public class BSTree extends Tree {
                 return current.right.Insert(address, size, key);
             }
         }
-        if(this.key>key){
-            if(this.right==null){
-                this.right=new_node;
-                new_node.parent=this;
+        if(current.key>key){
+            if(current.right==null){
+                current.right=new_node;
+                new_node.parent=current;
                 return new_node;
             }
             else{
-                return this.right.Insert(address, size, key);
+                return current.right.Insert(address, size, key);
             }
         }
-        if(this.key>key){
-            if(this.left==null){
-                this.left=new_node;
-                new_node.parent=this;
+        if(current.key>key){
+            if(current.left==null){
+                current.left=new_node;
+                new_node.parent=current;
                 return new_node;
             }
             else{
-                return this.left.Insert(address, size, key);
+                return current.left.Insert(address, size, key);
             }
         }
         return null;
@@ -65,35 +65,46 @@ public class BSTree extends Tree {
         
     public BSTree Find(int key, boolean exact)
     { 
-        if(!this.isSentinal()){
-            return this.parent.Find(key, exact);
+        BSTree current=this;
+        if(!current.isSentinal()){
+            current=current.parent;
         }
-
+        current=current.right;
         if(exact==true){
-            if(this==null){
-                return null;
+            while(current!=null){
+                if(current.key==key){
+                    return current;
+                }
+                if(current.key>key){
+                    current=current.left;
+                    continue;
+                }
+                if(current.key<key){
+                    current=current.right;
+                    continue;
+                }   
             }
-            if(this.key==key){
-                return this;
-            }
-            if(this.key>key){
-                return this.right.Find(key, true);
-            }
-            if(this.key<key){
-                return this.left.Find(key, true);
-            }
-            
+            return null;
         }
         if(exact==false){
-            if(this==null){
-                return null;
+            int flag=0;
+            while(current!=null){
+                if(current.key==key){
+                    return current;
+                }
+                if(current.key<key){
+                    current=current.right;
+                    continue;
+                }
+                if(current.key>key){
+                    flag=1;
+                    break;
+                }
             }
-            if(this.key>=key){
-                return this;
+            if(flag==1){
+                return current.predesessor();
             }
-            if(this.key<key){
-                return this.left.Find(key, false);
-            }
+            return null;
         }
         return null;
     }
@@ -128,6 +139,42 @@ public class BSTree extends Tree {
         return false;
     }
 
+    private BSTree successor(){
+        BSTree current=this;
+        if(current.right!=null){
+            current=current.right;
+            while(current.left!=null){
+                current=current.left;
+            }
+            return current;
+        }
+        if(current.parent==null){
+            return null;
+        }
+        if(current.parent.left==current){
+            return current.parent;
+        }
+        return null;
+
+    }
+    private BSTree predesessor(){
+        BSTree current=this;
+        if(current.left!=null){
+            current=current.left;
+            while(current.right!=null){
+                current=current.right;
+            }
+            return current;
+        }
+        if(current.parent==null){
+            return null;
+        }
+        if(current.parent.right==current){
+            return current.parent;
+        }
+        return null;
+
+    }
 }
 
 

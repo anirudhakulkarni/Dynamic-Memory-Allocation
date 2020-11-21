@@ -60,6 +60,8 @@ public class A1DynamicMem extends DynamicMem {
                 return loc.address;
             }
         }*/
+        //System.out.println(this.freeBlk.sanity());
+        //System.out.println(this.allocBlk.sanity());
         if(blockSize<=0){
             return -1;
         }
@@ -82,6 +84,8 @@ public class A1DynamicMem extends DynamicMem {
     } 
     
     public int Free(int startAddr) {
+        //System.out.println(this.freeBlk.sanity());
+        //System.out.println(this.allocBlk.sanity());
         Dictionary loc=this.allocBlk.Find(startAddr, true);
         if(loc!=null){
             this.freeBlk.Insert(loc.address, loc.size, loc.size);
