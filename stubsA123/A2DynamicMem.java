@@ -15,6 +15,8 @@ public class A2DynamicMem extends A1DynamicMem {
     // For A2, implement the Defragment function for the class A2DynamicMem and test using BSTrees and AVLTrees. 
 
     public void Defragment() {
+        BSTree tempTree=new BSTree();
+        
         return ;
     }
 }

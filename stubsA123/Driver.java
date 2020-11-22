@@ -30,10 +30,18 @@ public class Driver{
                     default:
                         break;
                 }
+               /* if(result==+2728){
+                    System.out.println("command= "+command+" argument= "+argument);
+                    obj.printBlk();
+                    return;
+                }
+                
+*/
                 System.out.println(result);
-
                 //for testing
-                //if(origNum - numCommands < 700) {System.out.println(origNum - numCommands);obj.printBlk();}
+
+                //System.out.println("command= "+command+" argument= "+argument);
+                //obj.printBlk();
             }
             
         }

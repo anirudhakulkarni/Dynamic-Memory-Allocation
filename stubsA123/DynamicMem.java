@@ -15,11 +15,11 @@ public abstract class DynamicMem {
     int type;                              // Type of dictionary: 1 -- DL List; 2 -- Binary Search Tree; 3 -- AVL Tree
             
     public DynamicMem() {                  // Constructor function should create a memory of size M if no size specified
-        this(M, 1);                        // Default dictionary using doubly linked lists
+        this(M, 2);                        // Default dictionary using doubly linked lists
    }
     public DynamicMem(int size) {          // Default dictionary uses doubly linked lists
                                         
-        this(size, 1);
+        this(size, 2);
     }
 
     public DynamicMem(int size, int dict_type) {
@@ -88,6 +88,6 @@ public abstract class DynamicMem {
        //     4.1 Merge them into a single block
        //     4.2 Remove the free blocks from the free list and the new dictionary
        //     4.3 Add the merged block into the free list and the new dictionary
-       //     5. Continue traversing the new dictionary
+       //     5. Continue traversing the new dictionary 
        //     6. Once the traversal is complete, delete the new dictionary
 }

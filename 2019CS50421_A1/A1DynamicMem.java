@@ -20,24 +20,24 @@ public class A1DynamicMem extends DynamicMem {
         return ;
     }
     // uncommment this to print contents of the lists
-    public void printBlk(){
-        System.out.print("\nfreeBlk is : ");
-        Dictionary first = this.freeBlk.getFirst();
-        while(first!=null){
-          System.out.print(" ("+first.address+", "+first.size+", "+first.key+") ");
-          if(this.freeBlk==first) System.out.print(" <-- ");
-          first = first.getNext();
-        }
+    // public void printBlk(){
+    //     System.out.print("\nfreeBlk is : ");
+    //     Dictionary first = this.freeBlk.getFirst();
+    //     while(first!=null){
+    //       System.out.print(" ("+first.address+", "+first.size+") ");
+    //       if(this.freeBlk==first) System.out.print(" <-- ");
+    //       first = first.getNext();
+    //     }
   
-        System.out.print("\nallocBlk is : ");
-        first = this.allocBlk.getFirst();
-        while(first!=null){
-          System.out.print(" ("+first.address+", "+first.size+", "+first.key+") ");
-          if(this.allocBlk==first) System.out.print(" <-- ");
-          first = first.getNext();
-        }
-        System.out.print("\n");
-      }
+    //     System.out.print("\nallocBlk is : ");
+    //     first = this.allocBlk.getFirst();
+    //     while(first!=null){
+    //       System.out.print(" ("+first.address+", "+first.size+") ");
+    //       if(this.allocBlk==first) System.out.print(" <-- ");
+    //       first = first.getNext();
+    //     }
+    //     System.out.print("\n");
+    //   }
 
 
 
@@ -66,9 +66,7 @@ public class A1DynamicMem extends DynamicMem {
             return -1;
         }
         Dictionary loc=this.freeBlk.Find(blockSize, false);
-        
         if(loc!=null){
-            //System.out.println("Found this "+loc.address+" key "+loc.key);
             if(loc.size==blockSize){
                 this.allocBlk.Insert(loc.address, loc.size, loc.address);
                 int loc_address=loc.address;
@@ -77,10 +75,9 @@ public class A1DynamicMem extends DynamicMem {
             }
             this.allocBlk.Insert(loc.address, blockSize, loc.address);
             this.freeBlk.Insert(loc.address+blockSize, loc.size-blockSize, loc.size-blockSize);
-            int loc_address=loc.address;
             this.freeBlk.Delete(loc);
-            return loc_address;
-//bug here ask for change            
+            return loc.address;
+            
         }
     
         return -1;
