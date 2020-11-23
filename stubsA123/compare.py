@@ -2,6 +2,7 @@
 @anirudha
 12:26:55 17-11-2020
 '''
+counter=0
 choose=int(input("Original [press 0] or New [press 1]?"))
 if(choose==1):
   filename1 = input("input file: ") 
@@ -30,7 +31,8 @@ if len(file1) > len(file2):
   for line in file1_line: 
     if line != file2_line[n]: 
       print("Not Match:","Line :",n + 1,filename1,":",line,"|",filename2,":",file2_line[n]) 
-      n += 1 
+      n += 1
+      counter+=1 
     else: 
       n += 1 
  
@@ -41,7 +43,10 @@ elif len(file1) < len(file2):
   for line in file2_line: 
     if line != file1_line[n]: 
       print("Not Match:","Line :",n + 1,filename2,":",line,"|",filename1,":",file1_line[n]) 
-      n += 1 
+      n += 1
+      counter+=1 
+      if counter==1:
+        ans=line
   else: 
     n += 1 
  
@@ -53,5 +58,12 @@ else:
     if line != file2_line[n]: 
       print("Not Match:","Line :",n + 1,filename1,":",line,"|",filename2,":",file2_line[n]) 
       n += 1 
+      counter+=1
+      if counter==1:
+        ans=line
+        ans2=n
     else: 
       n += 1
+print("Total mismatches" +str(counter))
+print("output "+str(ans))
+print("error is at line "+str(ans2))

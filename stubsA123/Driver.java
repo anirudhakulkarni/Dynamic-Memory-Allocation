@@ -6,6 +6,7 @@ public class Driver{
         int numTestCases;
         Scanner sc = new Scanner(System.in);
         numTestCases = sc.nextInt();
+        int num=0;
         while(numTestCases-->0){
             int size;
             size = sc.nextInt();
@@ -30,13 +31,14 @@ public class Driver{
                     default:
                         break;
                 }
-               /* if(result==+2728){
+              /* if(num==2728||num==2727){
                     System.out.println("command= "+command+" argument= "+argument);
                     obj.printBlk();
-                    return;
+                    System.out.println(result);
                 }
-                
-*/
+                if(num==2728)break;
+               */ 
+                num++;
                 System.out.println(result);
                 //for testing
 

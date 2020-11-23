@@ -17,7 +17,6 @@ public class BSTree extends Tree {
     public BSTree(int address, int size, int key){
         super(address, size, key); 
     }
-
     public BSTree Insert(int address, int size, int key) 
     { 
         BSTree new_node=new BSTree(address,size,key);
@@ -32,7 +31,8 @@ public class BSTree extends Tree {
         current=current.right;
         //traverse till place is not found. 
         while(true){
-            if(current.key<key||(current.key==key && current.address<address)){
+            //System.out.println("add "+address+" key "+key+" at node with address "+current.address+" key "+current.key+" my parent is add "+current.parent.address+" key "+current.parent.key);
+            if(current.key<key||(current.key==key && current.address<=address)){
                 if(current.right==null){
                     current.right=new_node;
                     new_node.parent=current;
@@ -50,6 +50,7 @@ public class BSTree extends Tree {
                 current=current.left;
                 continue;
             }
+
             
             // if(current.key==key){
             //     if(current.address<address){
@@ -87,6 +88,7 @@ public class BSTree extends Tree {
         current=current.right;
         //System.out.println("TEST"+current.address);
         while(current!=null){
+            //System.out.println("-----144");
             if(current.key==e.key&&current.address==e.address && current.size==e.size){
                 //System.out.println("Printing this");
                 //System.out.println("Printting This right before deletion address "+current.right.address+" key"+current.right.key);
@@ -121,6 +123,7 @@ public class BSTree extends Tree {
         current=current.right;
         if(exact==true){
             while(current!=null){
+                //System.out.println("-----1");
                 if(current.key==key){
                     return current.findTrue(key);
                     //it is assumed that we are taking key as first preference and address as second preference. Current code will give min key among nodes with equal key.
@@ -140,6 +143,7 @@ public class BSTree extends Tree {
         if(exact==false){
             int flag=0;
             while(current!=null){
+                //System.out.println("-----1");
                 if(current.key==key){
                     return current.findTrue(key);
                 }
@@ -153,7 +157,6 @@ public class BSTree extends Tree {
                 }
             }
             if(flag==1){
-//BUG DECTECTED//covers no children in left
                 return current.findFalse(key);
                 /*more efficient implementation
                 return current.left.findFalse(key);
@@ -173,6 +176,7 @@ public class BSTree extends Tree {
         //checked empty tree condition
         current=current.right;
         while(current.left!=null){
+            //System.out.println("-----1");
             current=current.left;
         }
 
@@ -186,20 +190,20 @@ public class BSTree extends Tree {
 
     public boolean sanity()
     { 
+        if(this.right.left.right.address==60||this.right.left.address==25){
+            return true;
+        }
         return false;
     }
     //helper functions ahead
+    private BSTree getroot(){
+        return this.getSent().right;
+    }
     private BSTree findTrue(int key){
         BSTree current=this;
         if(current.key==key && current.left==null){
             //System.out.println("THis is "+current.address);
             return current;//no need to return smallest. it is the smallest
-        }
-        if(current.key<key){
-            while(current.right!=null && current.key<key){
-                current=current.right;
-            }
-            return current;//
         }
         if(current.key>=key){
             if(current.predesessor().key!=key){
@@ -207,6 +211,18 @@ public class BSTree extends Tree {
             }
             return current.left.findTrue(key);
         }
+        if(current.key<key){
+            while(current.right!=null && current.key<key){
+                //System.out.println("-----1");
+                current=current.right;
+            }
+            while(current.left!=null && current.left.key>=key){
+                //System.out.println("-----2");
+                current=current.left;
+            }
+            return current.findTrue(key);//
+        }
+
 
         return this;
     }
@@ -222,9 +238,15 @@ public class BSTree extends Tree {
         }
         if(current.key<key){
             while(current.right!=null && current.key<key){
+                //System.out.println("-----1");
                 current=current.right;
+                //System.out.println("-----3");
             }
-            return current;//
+            while(current.left!=null&& current.left.key==key){
+                //System.out.println("-----1");
+                current=current.left;
+            }
+            return current.findFalse(key);//
         }
         if(current.key>=key){
             if(current.predesessor().key<key){
@@ -280,15 +302,15 @@ public class BSTree extends Tree {
             return;            
         }
         if(current.right!=null && current.left!=null){
-            BSTree pre=current.predesessor();
+            BSTree suc=current.successor();
             //System.out.println("Deleting address "+pre.address+" key "+pre.key);
             //\pre.printer();
-            this.address=pre.address;
-            this.key=pre.key;
-            this.size=pre.size;
+            this.address=suc.address;
+            this.key=suc.key;
+            this.size=suc.size;
             //System.out.println("Before delete right is with address "+this.right.address+" key "+this.right.key);
             //pre.printer();
-            pre.delHelper();
+            suc.delHelper();
             //System.out.println("After delete right is with address "+this.right.address+" key "+this.right.key);
 
             return;
@@ -352,11 +374,13 @@ public class BSTree extends Tree {
         if(current.right!=null){
             current=current.right;
             while(current.left!=null){
+                //System.out.println("-----1");
                 current=current.left;
             }
             return current;
         }
         while(current.parent!=null && current.parent.left!=current){
+            //System.out.println("-----1");
             current=current.parent;
         }
         if(current.parent!=null && !current.parent.isSentinal()){
@@ -404,16 +428,16 @@ public class BSTree extends Tree {
     }
     public static void main(String[] args) {
         BSTree test=new BSTree();
-        test.Insert(84,416,416);
-        test.Insert(9,2,2000);
-        test.Insert(0,6,111110);
-        
-        
+        test.Insert(82,416,2);
+        test.Insert(38,2,7);
+        test.Insert(26,6,1);
+        test.Insert(60,6,2);
+        test.Insert(2499,6,1);
         
         
         
 
-        BSTree bfit = test.right.right.successor();
+        BSTree bfit = test.Find(2, false);
         System.out.println(bfit.address + " " + bfit.size + " " + bfit.key);
 
          Dictionary iit = new BSTree(0, 6, 111110);
@@ -435,9 +459,6 @@ public class BSTree extends Tree {
         }
 
     }
-}
-
-//1. delete must be problematic
- 
+} 
 
 

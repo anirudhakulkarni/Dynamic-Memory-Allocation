@@ -21,6 +21,7 @@ public class A1DynamicMem extends DynamicMem {
     }
     // uncommment this to print contents of the lists
     public void printBlk(){
+        System.out.println("LAWD "+this.freeBlk.sanity());
         System.out.print("\nfreeBlk is : ");
         Dictionary first = this.freeBlk.getFirst();
         while(first!=null){
