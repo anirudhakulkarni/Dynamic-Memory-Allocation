@@ -50,7 +50,24 @@ public class BSTree extends Tree {
                 current=current.left;
                 continue;
             }
-
+            if(current.key==key&&current.address==address&&current.size<size){
+                if(current.right==null){
+                    current.right=new_node;
+                    new_node.parent=current;
+                    return new_node;
+                }
+                current=current.right;
+                continue;
+            }
+            if(current.key==key&&current.address==address&&current.size<size){
+                if(current.left==null){
+                    current.left=new_node;
+                    new_node.parent=current;
+                    return new_node;
+                }
+                current=current.left;
+                continue;
+            }         
             
             // if(current.key==key){
             //     if(current.address<address){
@@ -190,10 +207,57 @@ public class BSTree extends Tree {
 
     public boolean sanity()
     { 
-        if(this.right.left.right.address==60||this.right.left.address==25){
+        //BSTree current=this;
+        if(this.isSentinal()){
+            if(this.right==null){
+                return true;
+            }
+            else{
+                return this.right.sanity();
+            }
+        }
+        //now we have non sentinel node
+        if(this.right==null && this.left==null){
             return true;
         }
+        if(this.right!=null&&this.left==null){
+            if(this.right.key>this.key||(this.right.key==this.key&&this.right.address>this.address)){
+                return this.right.sanity();
+            }
+            else{
+                return false;
+            }
+        }
+        if(this.left!=null&&this.right==null){
+            if(this.left.key<this.key||(this.left.key==this.key&&this.left.address<this.address)){
+                return this.left.sanity();
+            }
+            else{
+                return false;
+            }
+        }
+        if(this.left!=null&&this.right!=null){
+            if(this.left.key<this.key&&this.key<this.right.key){
+                return this.left.sanity()&&this.right.sanity();
+            }
+            if(this.key==this.left.key&&this.key==this.right.key&&this.left.address<this.address&&this.address<this.right.address){
+                return this.left.sanity()&&this.right.sanity();
+            }
+            if(this.key==this.left.key&&this.right.key>this.key&&this.left.address<this.address){
+                return this.left.sanity()&&this.right.sanity();
+            }
+            if(this.left.key<this.key&&this.right.key==this.key&&this.address<this.right.address){
+                return this.left.sanity()&&this.right.sanity();
+            }
+            else{
+                return false;
+            }
+        }
+
+
         return false;
+
+
     }
     //helper functions ahead
     private BSTree getroot(){
@@ -428,12 +492,9 @@ public class BSTree extends Tree {
     }
     public static void main(String[] args) {
         BSTree test=new BSTree();
-        test.Insert(82,416,2);
-        test.Insert(38,2,7);
-        test.Insert(26,6,1);
-        test.Insert(60,6,2);
-        test.Insert(2499,6,1);
-        
+        test.Insert(82,416,200);
+        test.Insert(38,2,700);
+
         
         
 

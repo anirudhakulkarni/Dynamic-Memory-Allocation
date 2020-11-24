@@ -1,7 +1,7 @@
 import java.util.Scanner;
 public class Driver{
     public static void main(String args[]){
-    	//long startTime = System.nanoTime();
+    	long startTime = System.nanoTime();
 
         int numTestCases;
         Scanner sc = new Scanner(System.in);
@@ -10,7 +10,7 @@ public class Driver{
         while(numTestCases-->0){
             int size;
             size = sc.nextInt();
-            A1DynamicMem obj = new A1DynamicMem(size);
+            A2DynamicMem obj = new A2DynamicMem(size);
             int numCommands = sc.nextInt();
             //testing purpose
             //int origNum = numCommands;
@@ -18,37 +18,49 @@ public class Driver{
             while(numCommands-->0) {
                 String command;
                 command = sc.next();
+              /*  if (command.equals("Defragment")){
+                    obj.Defragment();
+                    //obj.printBlk();
+                    continue;
+                }*/
                 int argument;
                 argument = sc.nextInt();
                 int result = -5;
                 switch (command) {
+
                     case "Allocate":
                         result = obj.Allocate(argument);
                         break;
                     case "Free":
                         result = obj.Free(argument);
                         break;
+                    case "Defragment":
+                        obj.Defragment();
+                        break;
                     default:
                         break;
                 }
-              /* if(num==2728||num==2727){
-                    System.out.println("command= "+command+" argument= "+argument);
-                    obj.printBlk();
-                    System.out.println(result);
-                }
-                if(num==2728)break;
-               */ 
+            //    if(num>2477&&num<2500){
+            //         System.out.println(result);
+            //         System.out.println("command= "+command+" argument= "+argument);
+            //         obj.printBlk();
+                    
+            //     }
+            //     if(num==2501)break;
+                
                 num++;
                 System.out.println(result);
                 //for testing
-
-                //System.out.println("command= "+command+" argument= "+argument);
-                //obj.printBlk();
+/*
+                System.out.println("command= "+command+" argument= "+argument);
+                obj.printBlk();
+                System.out.println("End here");
+  */          
             }
             
         }
-    //long stopTime = System.nanoTime();
-	//System.out.println((stopTime - startTime)/1000000000.0);
+    long stopTime = System.nanoTime();
+	System.out.println((stopTime - startTime)/1000000000.0);
     }
 
 

@@ -3,6 +3,8 @@
 12:26:55 17-11-2020
 '''
 counter=0
+ans=0
+ans2=0
 choose=int(input("Original [press 0] or New [press 1]?"))
 if(choose==1):
   filename1 = input("input file: ") 
@@ -64,6 +66,6 @@ else:
         ans2=n
     else: 
       n += 1
-print("Total mismatches" +str(counter))
-print("output "+str(ans))
+print("Total mismatches " +str(counter))
+print("Wrong output is "+str(ans))
 print("error is at line "+str(ans2))
