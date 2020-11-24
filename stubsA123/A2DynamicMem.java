@@ -13,7 +13,7 @@ public class A2DynamicMem extends A1DynamicMem {
     // No changes should be required in the A1DynamicMem functions. 
     // They should work seamlessly with the newly supplied implementation of BSTrees and AVLTrees
     // For A2, implement the Defragment function for the class A2DynamicMem and test using BSTrees and AVLTrees. 
-
+//OVERRIDEN
     public int Allocate(int blockSize) {
         /*Dictionary loc=this.freeBlk.Find(blockSize, true);
         if(loc!=null){
@@ -47,9 +47,9 @@ public class A2DynamicMem extends A1DynamicMem {
             }
             this.allocBlk.Insert(loc.address, blockSize, loc.address);
             this.freeBlk.Insert(loc.address+blockSize, loc.size-blockSize, loc.size-blockSize);
-            int loc_address=loc.address;
+            int loc_address=loc.address;//CHNAGE HERE
             this.freeBlk.Delete(loc);
-            return loc_address;
+            return loc_address;//CHANGE HERE
 //bug here ask for change            
         }
     
