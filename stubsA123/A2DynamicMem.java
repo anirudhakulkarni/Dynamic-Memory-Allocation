@@ -14,6 +14,47 @@ public class A2DynamicMem extends A1DynamicMem {
     // They should work seamlessly with the newly supplied implementation of BSTrees and AVLTrees
     // For A2, implement the Defragment function for the class A2DynamicMem and test using BSTrees and AVLTrees. 
 
+    public int Allocate(int blockSize) {
+        /*Dictionary loc=this.freeBlk.Find(blockSize, true);
+        if(loc!=null){
+            this.allocBlk.Insert(loc.address, loc.size, loc.address);
+            this.freeBlk.Delete(loc);
+            return loc.address;
+        }
+        else{
+            loc=this.freeBlk.Find(blockSize, false);
+            if(loc!=null){
+                this.allocBlk.Insert(loc.address, blockSize, loc.address);
+                this.freeBlk.Insert(loc.address+blockSize, loc.size-blockSize, loc.size-blockSize);
+                this.freeBlk.Delete(loc);
+                return loc.address;
+            }
+        }*/
+        //System.out.println(this.freeBlk.sanity());
+        //System.out.println(this.allocBlk.sanity());
+        if(blockSize<=0){
+            return -1;
+        }
+        Dictionary loc=this.freeBlk.Find(blockSize, false);
+        
+        if(loc!=null){
+            //System.out.println("Found this "+loc.address+" key "+loc.key);
+            if(loc.size==blockSize){
+                this.allocBlk.Insert(loc.address, loc.size, loc.address);
+                int loc_address=loc.address;
+                this.freeBlk.Delete(loc);
+                return loc_address;
+            }
+            this.allocBlk.Insert(loc.address, blockSize, loc.address);
+            this.freeBlk.Insert(loc.address+blockSize, loc.size-blockSize, loc.size-blockSize);
+            int loc_address=loc.address;
+            this.freeBlk.Delete(loc);
+            return loc_address;
+//bug here ask for change            
+        }
+    
+        return -1;
+    } 
     public void Defragment() {
         BSTree tempTree=new BSTree();
         Dictionary orig=this.freeBlk;

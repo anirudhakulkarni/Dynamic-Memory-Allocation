@@ -78,9 +78,9 @@ public class A1DynamicMem extends DynamicMem {
             }
             this.allocBlk.Insert(loc.address, blockSize, loc.address);
             this.freeBlk.Insert(loc.address+blockSize, loc.size-blockSize, loc.size-blockSize);
-            int loc_address=loc.address;
+            //int loc_address=loc.address;
             this.freeBlk.Delete(loc);
-            return loc_address;
+            return loc.address;
 //bug here ask for change            
         }
     
