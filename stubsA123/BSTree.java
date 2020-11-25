@@ -68,27 +68,7 @@ public class BSTree extends Tree {
                 current=current.left;
                 continue;
             }         
-            
-            // if(current.key==key){
-            //     if(current.address<address){
-            //         if(current.right==null){
-            //             current.right=new_node;
-            //             new_node.parent=current;
-            //             return new_node;
-            //         }
-            //         current=current.right;
-            //         continue;
-            //     }
-            //     if(current.address>address){
-            //         if(current.left==null){// this condition might not neccessary. it will be always null. but will fail if we add more than 2 keys with same key
-            //             current.left=new_node;
-            //             new_node.parent=current;
-            //             return new_node;
-            //         }
-            //         current=current.left;
-            //         continue;
-            //     }
-            // }
+
         }
         
 
@@ -97,6 +77,26 @@ public class BSTree extends Tree {
     public boolean Delete(Dictionary e)
     { 
         BSTree current=this;
+        if(current.key==e.key&&current.address==e.address && current.size==e.size){
+            if(current.successor()!=null){
+                current.delHelperTWS();
+                return true;
+            }
+            if(current.predesessor()!=null){
+                current.delHelperTWP();
+                return true;
+            }
+            current.address=-1;
+            current.key=-1;
+            current.size=-1;
+            current.parent=null;
+            return true;
+        }
+        int flag=0;
+        if(this==current.getSent()){
+            flag=1;
+        }
+
         current=current.getSent();
         //System.out.println("TEST"+current.address);
         if(current.right==null){//empty tree
@@ -107,10 +107,13 @@ public class BSTree extends Tree {
         while(current!=null){
             //System.out.println("-----144");
             if(current.key==e.key&&current.address==e.address && current.size==e.size){
-                //System.out.println("Printing this");
-                //System.out.println("Printting This right before deletion address "+current.right.address+" key"+current.right.key);
-                //System.out.println("deleting "+current.address);
-                current.delHelper();
+
+                if(flag==1){
+                    current.delHelper(this);
+                }
+                else{
+                    current.delHelper(null);
+                }
                 //System.out.println("Printting This right address "+current.right.address+" key"+current.right.key);
 
                 return true;
@@ -207,59 +210,57 @@ public class BSTree extends Tree {
 
     public boolean sanity()
     { 
-        //BSTree current=this;
-        if(this.isSentinal()){
-            if(this.right==null){
-                return true;
-            }
-            else{
-                return this.right.sanity();
-            }
+        BSTree current=this.getSent();
+        if(current.left!=null){
+            return false;
         }
-        //now we have non sentinel node
-        if(this.right==null && this.left==null){
+        if(current.right==null){
             return true;
         }
-        if(this.right!=null&&this.left==null){
-            if(this.right.key>this.key||(this.right.key==this.key&&this.right.address>this.address)){
-                return this.right.sanity();
-            }
-            else{
-                return false;
-            }
-        }
-        if(this.left!=null&&this.right==null){
-            if(this.left.key<this.key||(this.left.key==this.key&&this.left.address<this.address)){
-                return this.left.sanity();
-            }
-            else{
-                return false;
-            }
-        }
-        if(this.left!=null&&this.right!=null){
-            if(this.left.key<this.key&&this.key<this.right.key){
-                return this.left.sanity()&&this.right.sanity();
-            }
-            if(this.key==this.left.key&&this.key==this.right.key&&this.left.address<this.address&&this.address<this.right.address){
-                return this.left.sanity()&&this.right.sanity();
-            }
-            if(this.key==this.left.key&&this.right.key>this.key&&this.left.address<this.address){
-                return this.left.sanity()&&this.right.sanity();
-            }
-            if(this.left.key<this.key&&this.right.key==this.key&&this.address<this.right.address){
-                return this.left.sanity()&&this.right.sanity();
-            }
-            else{
-                return false;
-            }
-        }
 
-
-        return false;
-
-
+        current=current.right;
+        //now we have non sentinel node
+        BSTree min=new BSTree(Integer.MIN_VALUE,Integer.MIN_VALUE,Integer.MIN_VALUE);
+        BSTree max=new BSTree(Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE);
+        
+        return (bstproperty(current,min, max)&&pccheck(current));
     }
     //helper functions ahead
+    private boolean pccheck(BSTree root){
+        
+        if(root==null){
+            return true;
+        }
+        if(root.left!=null&&root.right!=null){
+            System.out.println("PRINT me "+root.key);
+            return pccheck(root.right)&&pccheck(root.left)&&(root.right.parent==root)&&(root.left.parent==root);
+        }
+        if(root.left==null&&root.right!=null){
+            System.out.println("PRINT me "+root.key);
+            return pccheck(root.right)&&pccheck(root.left)&&(root.right.parent==root);
+        }
+        if(root.left!=null&&root.right==null){
+            return pccheck(root.right)&&pccheck(root.left)&&(root.left.parent==root);
+        }
+        return true;
+        
+    }
+    private boolean bstproperty(BSTree current,BSTree min, BSTree max){
+        if(current==null){
+            return true;
+        }
+        if(current.key<min.key || current.key>max.key){
+            return false;
+        }
+        if(current.key==min.key&&current.address<=min.address){
+            return false;
+        }
+        if(current.key==max.key&&current.address>max.address){
+            return false;
+        }
+
+        return bstproperty(current.left,min, current)&&bstproperty(current.right, current, max);
+    }
     private BSTree getroot(){
         return this.getSent().right;
     }
@@ -320,20 +321,9 @@ public class BSTree extends Tree {
         }
 
         return this;
-        // if(current.left==null){
-        //     return null;
-        // }
-        //System.out.println("left not null addresss= "+current.left.address+" key= "+current.key);
-        // current=current.left;
-        // if(current.key==key){
-        //     return current;
-        // }
 
     }
-    private void printer(){
-        System.out.println(this.address+" "+this.size+" "+this.key);
-    }
-    private void delHelper(){
+    private void delHelper(BSTree original){
         BSTree current=this;
         if(current.right==null && current.left==null){
             //System.out.println("deleting leaf with address "+current.address+" key "+current.key);
@@ -369,58 +359,97 @@ public class BSTree extends Tree {
             BSTree suc=current.successor();
             //System.out.println("Deleting address "+pre.address+" key "+pre.key);
             //\pre.printer();
+            if(original!=null&&suc==original){
+                suc=current.predesessor();
+            }
             this.address=suc.address;
             this.key=suc.key;
             this.size=suc.size;
             //System.out.println("Before delete right is with address "+this.right.address+" key "+this.right.key);
             //pre.printer();
-            suc.delHelper();
+            suc.delHelper(null);
             //System.out.println("After delete right is with address "+this.right.address+" key "+this.right.key);
 
             return;
         }
-        // if(current.left!=null ){//if left child exists
-        //     BSTree pre=current.predesessor();
-        //     //System.out.println("Deleting address "+pre.address+" key "+pre.key);
-        //     //\pre.printer();
-        //     if(pre==null){
-        //         return;
-        //     }
-        //     this.address=pre.address;
-        //     this.key=pre.key;
-        //     this.size=pre.size;
-        //     //System.out.println("Before delete right is with address "+this.right.address+" key "+this.right.key);
-        //     //pre.printer();
-        //     pre.delHelper();
-        //     //System.out.println("After delete right is with address "+this.right.address+" key "+this.right.key);
-
-        //     return;
-            
-        // }
-        // if(current.right!=null){//right exists and left is null
-        //     BSTree suc=current.successor();
-        //     // if(suc==null){//this cant happen as right exists
-        //     //     return;
-        //     // }
-        //     this.address=suc.address;
-        //     this.key=suc.key;
-        //     this.size=suc.size;
-        //     suc.delHelper();
-        //     return;
-        // }
-        // //both null
-        // if(current.right==null && current.left==null){
-        //     //System.out.println("deleting leaf with address "+current.address+" key "+current.key);
-        //     if(current.parent.right==current){
-        //         current.parent.right=null;
-        //         return;
-        //     }
-        //     current.parent.left=null;
-        //     return;
-        // }
-        // //garbage collection will remove it as no pointer to the node exists
+        
 
     }
+    private void delHelperTWS(){
+        BSTree current=this;
+        BSTree suc=current.successor();
+        this.address=suc.address;
+        this.key=suc.key;
+        this.size=suc.size;
+        //System.out.println("Before delete right is with address "+this.right.address+" key "+this.right.key);
+        //pre.printer();
+        suc.delHelper(null);
+        //System.out.println("After delete right is with address "+this.right.address+" key "+this.right.key);
+
+        return;
+    
+    }
+    private void delHelperTWP(){
+        BSTree current=this;
+        BSTree suc=current.predesessor();
+        //System.out.println("Deleting address "+pre.address+" key "+pre.key);
+        //\pre.printer();
+        this.address=suc.address;
+        this.key=suc.key;
+        this.size=suc.size;
+        //System.out.println("Before delete right is with address "+this.right.address+" key "+this.right.key);
+        //pre.printer();
+        suc.delHelper(null);
+        //System.out.println("After delete right is with address "+this.right.address+" key "+this.right.key);
+
+        return;
+    
+    }
+    // private void delHelperT(){
+    //     if(this.left==null &&this.right==null){
+    //         this.address=this.parent.address;
+    //         this.size=this.parent.size;
+    //         this.key=this.parent.key;
+    //         //System.out.println("This value= "+this.address+" "+this.key);
+    //         if(this.parent.right==this){
+    //             //System.out.println("This was right child");
+    //             this.left=this.parent.left;
+    //             this.parent.left.parent=this;
+    //         }
+    //         if(this.parent.left==this){
+    //             //System.out.println("This was left child");
+    //             //System.out.println("This value bet everthing= "+this.parent.address+" "+this.parent.key);
+    //             this.right=this.parent.right;  
+    //             this.parent.right.parent=this;  
+    //         }
+    //         if(this.parent.parent.left==this.parent){
+    //             //System.out.println("This was parents left child");
+    //             this.parent.parent.left=this;
+    //             this.parent=this.parent.parent;
+    //             //System.out.println("This value after everthing= "+this.parent.address+" "+this.parent.key);
+    //             return;
+    //         }
+    //         if(this.parent.parent.right==this.parent){
+    //            // System.out.println("This was parents right child");
+    //             this.parent.parent.right=this;//this is neccessary before else you will lose parent
+    //             this.parent=this.parent.parent;
+                
+    //             return;
+    //         }
+    //         return;
+    //     }
+    //     if(this.left!=null&&this.right==null){
+    //         this.delHelperTWS();
+    //         return;
+    //     }
+    //     if(this.right!=null){
+    //         this.delHelper(null);
+    //         return;           
+    //     }
+    //     return;
+
+
+    // }
     private boolean isSentinal(){
         if(this.parent==null){
             return true;
@@ -444,14 +473,12 @@ public class BSTree extends Tree {
             return current;
         }
         while(current.parent!=null && current.parent.left!=current){
-            //System.out.println("-----1");
             current=current.parent;
         }
         if(current.parent!=null && !current.parent.isSentinal()){
             return current.parent;
         }   
         return null;
-
     }
 
     private BSTree predesessor(){
@@ -459,7 +486,6 @@ public class BSTree extends Tree {
         if(current.isSentinal()){
             return null;
         }
-
         //checked for invalid input of sentinel
         if(current.left!=null){
             current=current.left;
@@ -468,11 +494,6 @@ public class BSTree extends Tree {
             }
             return current;
         }
-
-        /*if(current.parent.right==current){
-            return current.parent;
-        }
-        else{*/
             while(current.parent!=null && current.parent.right!=current){
                 current=current.parent;
             }
@@ -480,8 +501,6 @@ public class BSTree extends Tree {
                 return current.parent;
             }   
             return null;
-        //}
-
     }
     private BSTree getSent(){
         BSTree current=this;
@@ -489,36 +508,6 @@ public class BSTree extends Tree {
             current=current.parent;
         }
         return current;
-    }
-    public static void main(String[] args) {
-        BSTree test=new BSTree();
-        test.Insert(82,416,200);
-        test.Insert(38,2,700);
-
-        
-        
-
-        BSTree bfit = test.Find(2, false);
-        System.out.println(bfit.address + " " + bfit.size + " " + bfit.key);
-
-         Dictionary iit = new BSTree(0, 6, 111110);
-         test.Delete(iit);
-        // bfit = test.Find(8, false);
-        // System.out.println(bfit.address + " " + bfit.size + " " + bfit.key);
-        // System.out.println();
-        for (BSTree d = test.getFirst(); d != null; d = d.successor()){
-            System.out.println(d.address+" "+d.size+" "+d.key);
-            if(d.successor()==null){
-                System.out.println();
-                while(d!=null){
-                    System.out.println(d.address+" "+d.size+" "+d.key);
-                    d=d.predesessor();
-                }
-                break;
-        
-            }
-        }
-
     }
 } 
 

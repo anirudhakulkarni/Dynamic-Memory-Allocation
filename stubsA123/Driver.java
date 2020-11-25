@@ -26,8 +26,8 @@ public class Driver{
                 int argument;
                 argument = sc.nextInt();
                 int result = -5;
+                boolean toPrint = true;
                 switch (command) {
-
                     case "Allocate":
                         result = obj.Allocate(argument);
                         break;
@@ -35,6 +35,7 @@ public class Driver{
                         result = obj.Free(argument);
                         break;
                     case "Defragment":
+                        toPrint = false;
                         obj.Defragment();
                         break;
                     default:
@@ -49,7 +50,8 @@ public class Driver{
             //     if(num==2501)break;
                 
                 num++;
-                System.out.println(result);
+                if(toPrint)
+                    System.out.println(result);
                 //for testing
 /*
                 System.out.println("command= "+command+" argument= "+argument);
