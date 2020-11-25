@@ -220,7 +220,7 @@ public class BSTree extends Tree {
 
         current=current.right;
         //now we have non sentinel node
-        BSTree min=new BSTree(Integer.MIN_VALUE,Integer.MIN_VALUE,Integer.MIN_VALUE);
+        BSTree min=new BSTree(Integer.MIN_VALUE,Integer.MIN_VALUE,Integer.MIN_VALUE);//hopefully test case is not with address=key=MAX_VALUE
         BSTree max=new BSTree(Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE);
         
         return (pccheck(current))&&(bstproperty(current,min, max));
@@ -499,19 +499,6 @@ public class BSTree extends Tree {
             current=current.parent;
         }
         return current;
-    }
-    public static void main(String[] args){
-        BSTree d = new BSTree();
-        d = d.Insert(1,2,3);
-        d = d.Insert(4,5,6);
-        d = d.Insert(7,8,9);
-        d = d.Insert(7,8,10);
-        d = d.Insert(1,2,5);
-        d = d.Insert(1,2,4);
-        System.out.println(d.sanity());
-        d.parent.parent.right.left = d;
-        d.parent = d.parent.parent.right;
-        System.out.println(d.sanity());
     }
 } 
 
