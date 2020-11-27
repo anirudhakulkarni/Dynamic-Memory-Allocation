@@ -31,7 +31,7 @@ public class BSTree extends Tree {
         current=current.right;
         //traverse till place is not found. 
         while(true){
-            if(current.key<key||(current.key==key && current.address<=address)){
+            if(current.key<key||(current.key==key && current.address<address)){
                 if(current.right==null){
                     current.right=new_node;
                     new_node.parent=current;
@@ -40,7 +40,7 @@ public class BSTree extends Tree {
                 current=current.right;
                 continue;
             }
-            if(current.key>key||(current.key==key && current.address>address)){
+            if(current.key>key||(current.key==key && current.address>=address)){
                 if(current.left==null){
                     current.left=new_node;
                     new_node.parent=current;
@@ -58,7 +58,7 @@ public class BSTree extends Tree {
                 current=current.right;
                 continue;
             }
-            if(current.key==key&&current.address==address&&current.size<size){
+            if(current.key==key&&current.address==address&&current.size>=size){
                 if(current.left==null){
                     current.left=new_node;
                     new_node.parent=current;

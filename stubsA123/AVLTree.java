@@ -28,9 +28,69 @@ public class AVLTree extends BSTree {
     
     public AVLTree Insert(int address, int size, int key) 
     { 
-        return null;
-    }
+        AVLTree new_node=new AVLTree(address,size,key);
+        AVLTree current=this.getSent();
+        //current is at head sentinal now
+        if(current.right==null){
+            current.right=new_node;
+            new_node.parent=current;
+            return new_node;
+        }
+        //handled if node to be inserted is root and initial tree is empty with only sentinel node
+        current=current.right;
+        //traverse till place is not found. 
+        while(true){
+            if(current.key<key||(current.key==key && current.address<address)){
+                if(current.right==null){
+                    current.right=new_node;
+                    new_node.parent=current;
+                    break;
+                }
+                current=current.right;
+                continue;
+            }
+            if(current.key>key||(current.key==key && current.address>=address)){
+                if(current.left==null){
+                    current.left=new_node;
+                    new_node.parent=current;
+                    break;
+                }
+                current=current.left;
+                continue;
+            }
+            if(current.key==key&&current.address==address&&current.size<size){
+                if(current.right==null){
+                    current.right=new_node;
+                    new_node.parent=current;
+                    break;
+                }
+                current=current.right;
+                continue;
+            }
+            if(current.key==key&&current.address==address&&current.size>=size){
+                if(current.left==null){
+                    current.left=new_node;
+                    new_node.parent=current;
+                    break;
+                }
+                current=current.left;
+                continue;
+            }         
 
+        }
+        //possible cases of insertions:
+        //parent is of height 1 or of height 0 initially
+        //if 1 implies no change in hb
+        //else change in height balance
+        if(new_node.parent.height==1){
+            return new_node;
+        }
+        rebalance(new_node);
+        return new_node;
+
+        
+
+    }
     public boolean Delete(Dictionary e)
     {
         return false;
@@ -184,7 +244,12 @@ public class AVLTree extends BSTree {
         if(node!=null){
             return node.height;
         }
-        return 0;
+        return -1;
+    }
+
+    private void rebalance(AVLTree node){
+        
+        return;
     }
 }
 
