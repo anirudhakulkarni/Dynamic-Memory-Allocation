@@ -2,17 +2,12 @@
 @anirudha
 12:26:55 17-11-2020
 '''
+import sys
 counter=0
 ans=0
 ans2=0
-choose=int(input("Original [press 0] or New [press 1]?"))
-if(choose==1):
-  filename1 = input("input file: ") 
-  filename2 = input("Output file: ") 
-else:
-  filename1 = "ans.txt"
-  filename2 = "ansmy.txt"
-
+filename1 = sys.argv[2] 
+filename2 = sys.argv[1]
 file1 = open(filename1).readlines() 
  
 file1_line = [] 
