@@ -76,7 +76,7 @@ public class BSTree extends Tree {
     public boolean Delete(Dictionary e)
     { 
         BSTree current=this;
-        if(current.key==e.key&&current.address==e.address && current.size==e.size){
+        if(current.key==e.key&&current.address==e.address && current.size==e.size && !current.isSentinal()){
             if(current.successor()!=null){
                 current.delHelperTWS();
                 return true;

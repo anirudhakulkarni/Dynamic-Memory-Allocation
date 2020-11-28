@@ -35,7 +35,7 @@ public class AVLTree extends BSTree {
             current.right=new_node;
             new_node.parent=current;
             return new_node;
-        }
+        }//no need of height update
         //handled if node to be inserted is root and initial tree is empty with only sentinel node
         current=current.right;
         //traverse till place is not found. 
@@ -82,20 +82,126 @@ public class AVLTree extends BSTree {
         //parent is of height 1 or of height 0 initially
         //if 1 implies no change in hb
         //else change in height balance
+
         if(new_node.parent.height==1){
             return new_node;
         }
-        rebalance(new_node);
+        if(new_node.parent.parent.isSentinal()){
+            new_node.parent.height=1;
+            return new_node;
+        }
+        //now grandparent exits
+        if(new_node.parent.parent.height==2){
+            new_node.parent.height=1;            
+            return new_node;
+        }
+        updateh(new_node.parent);
+        // System.out.println("MC");
+        // for (AVLTree d = new_node.getFirst(); d != null; d = d.getNext()){
+        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
+        // }
+        AVLTree imbalance=firstub(new_node);
+        if(imbalance==null){
+            return new_node;
+        }
+        // System.out.println(imbalance.address+" lll "+imbalance.key);
+        if(imbalance.parent.left==imbalance&&imbalance.parent.parent.left==imbalance.parent){
+            rightrotate(imbalance.parent.parent);
+
+            updateh(imbalance.parent.left);
+            updateh(imbalance.parent.right);
+             updateh(imbalance.parent);
+            
+            return new_node;
+        }
+        if(imbalance.parent.left==imbalance&&imbalance.parent.parent.right==imbalance.parent){
+            rightrotate(imbalance.parent);
+            leftrotate(imbalance.parent);//new new_node is parent now
+        // System.out.println("MC");
+        // for (AVLTree d = new_node.getFirst(); d != null; d = d.getNext()){
+        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
+        // }           
+            updateh(imbalance.left);
+            updateh(imbalance.right);
+            updateh(imbalance);
+            return new_node;
+        }
+        if(imbalance.parent.right==imbalance&&imbalance.parent.parent.right==imbalance.parent){
+            leftrotate(imbalance.parent.parent);
+            updateh(imbalance.parent.left);
+            updateh(imbalance.parent.right);
+            updateh(imbalance.parent);
+            return new_node;
+        }
+        if(imbalance.parent.right==imbalance&&imbalance.parent.parent.left==imbalance.parent){
+            rightrotate(imbalance.parent);
+            leftrotate(imbalance.parent);
+            updateh(imbalance.left);
+            updateh(imbalance.right);
+            updateh(imbalance);
+            return new_node;
+        }
         return new_node;
 
         
 
     }
     public boolean Delete(Dictionary e)
-    {
+    { 
+        AVLTree current=this;
+        if(current.key==e.key&&current.address==e.address && current.size==e.size && !current.isSentinal()){
+            if(current.successor()!=null){
+                current.delHelperTWS();
+                return true;
+            }
+            if(current.predesessor()!=null){
+                current.delHelperTWP();
+                return true;
+            }
+            current.address=-1;
+            current.key=-1;
+            current.size=-1;
+            current.parent=null;
+            return true;
+        }
+        int flag=0;
+        if(this==current.getSent()){
+            flag=1;
+        }
+
+        current=current.getSent();
+        if(current.right==null){//empty tree
+            return false;
+        }
+        current=current.right;
+        while(current!=null){
+            //System.out.println("-----144");
+            if(current.key==e.key&&current.address==e.address && current.size==e.size){
+
+                if(flag==1){
+                    current.delHelper(this);
+                }
+                else{
+                    current.delHelper(null);
+                }
+                //System.out.println("Printting This right address "+current.right.address+" key"+current.right.key);
+
+                return true;
+            }
+
+            if(current.key>e.key || (current.key==e.key&&current.address>e.address)){
+                current=current.left;
+                continue;
+            }
+            if(current.key<e.key || (current.key==e.key&&current.address<e.address)){
+                current=current.right;
+                continue;
+            }   
+        }
+        
+        
         return false;
     }
-        
     // public AVLTree Find(int k, boolean exact)
     // { 
     //     return null;
@@ -248,8 +354,255 @@ public class AVLTree extends BSTree {
     }
 
     private void rebalance(AVLTree node){
+        //if parent is root - if sibling does not exit increment h of p
+        if(node.parent.parent.isSentinal()){
+            node.parent.height=1;
+            return;
+        }
+        //if valid grandparent exits 
         
         return;
+    }
+    private AVLTree firstub(AVLTree node){
+        if(node.parent.parent.isSentinal()||node.parent.parent==null){
+            return null;
+        }
+        if(abs(getheight(node.parent.parent.right)-getheight(node.parent.parent.left))<=1){
+            return firstub(node.parent);
+        }
+        return node;
+
+    }
+    private int abs(int a){
+        if(a>0){
+            return a;
+        }
+        return -1*a;
+    }
+    private void updateh(AVLTree node){
+        //genereally called on parent of inserted node
+        if(node==null||node.isSentinal()){
+            return;
+        }
+        // if(getheight(node)==max(getheight(node.left),getheight(node.right))+1){
+        //     return;
+        // }
+        node.height=max(getheight(node.left),getheight(node.right))+1;
+        updateh(node.parent);
+        return;
+    }
+    private int max(int a,int b){
+        if(a>b){
+            return a;
+        }
+        return b;
+    }
+    private void rightrotate(AVLTree node){
+        if(node.parent.right==node){
+            node.parent.right=node.left;
+            node.left.parent=node.parent;
+        }
+        else{
+            node.parent.left=node.left;
+            node.left.parent=node.parent;
+        }
+        node.parent=node.left;
+        if(node.left.right!=null){
+            node.left=node.left.right;
+            node.left.parent=node;
+            node.parent.right=node;
+            return;
+        }
+        node.left=null;
+        node.parent.right=node;
+
+    }
+    private void leftrotate(AVLTree node){
+        //System.out.println("Left rotae called on addres "+node.address);
+        if(node.parent.right==node){
+            node.parent.right=node.right;
+            node.right.parent=node.parent;
+        }
+        else{
+            node.parent.left=node.right;
+            node.right.parent=node.parent;
+        }
+        node.parent=node.right;
+        if(node.right.left!=null){
+            node.right=node.right.left;
+            node.right.parent=node;
+            node.parent.left=node;
+            return;
+        }
+        node.right=null;
+        node.parent.left=node;
+
+    }
+    private void delHelper(AVLTree original){
+        AVLTree current=this;
+        if(current.right==null && current.left==null){
+            if(current.parent.right==current){
+                current.parent.right=null;
+                return;
+            }
+            current.parent.left=null;
+            return;
+        }
+        //garbage collection will remove it as no pointer to the node exists
+        if(current.left==null&&current.right!=null){
+            if(current.parent.right==current){
+                current.right.parent=current.parent;
+                current.parent.right=current.right;
+                return;
+            }
+            current.right.parent=current.parent;
+            current.parent.left=current.right;
+            return;         
+        }
+        if(current.right==null&&current.left!=null){
+            if(current.parent.left==current){
+                current.left.parent=current.parent;
+                current.parent.left=current.left;
+                return;
+            }
+            current.left.parent=current.parent;
+            current.parent.right=current.left;
+            return;            
+        }
+        if(current.right!=null && current.left!=null){
+            AVLTree suc=current.successor();
+            if(original!=null&&suc==original){
+                suc=current.predesessor();
+            }
+            this.address=suc.address;
+            this.key=suc.key;
+            this.size=suc.size;
+            suc.delHelper(null);
+            return;
+        }
+    }
+    private void delHelperTWS(){
+        AVLTree current=this;
+        AVLTree suc=current.successor();
+        this.address=suc.address;
+        this.key=suc.key;
+        this.size=suc.size;
+        suc.delHelper(null);
+        return;
+    
+    }
+    private void delHelperTWP(){
+        AVLTree current=this;
+        AVLTree suc=current.predesessor();
+        this.address=suc.address;
+        this.key=suc.key;
+        this.size=suc.size;
+        suc.delHelper(null);
+        return;
+    
+    }
+    private AVLTree successor(){
+        AVLTree current=this;
+        if(current.isSentinal()){
+            return null;
+        }
+        //checked for invalid input of sentinel
+        
+        if(current.right!=null){
+            current=current.right;
+            while(current.left!=null){
+                current=current.left;
+            }
+            return current;
+        }
+        while(current.parent!=null && current.parent.left!=current){
+            current=current.parent;
+        }
+        if(current.parent!=null && !current.parent.isSentinal()){
+            return current.parent;
+        }   
+        return null;
+    }
+
+    private AVLTree predesessor(){
+        AVLTree current=this;
+        if(current.isSentinal()){
+            return null;
+        }
+        //checked for invalid input of sentinel
+        if(current.left!=null){
+            current=current.left;
+            while(current.right!=null){
+                current=current.right;
+            }
+            return current;
+        }
+            while(current.parent!=null && current.parent.right!=current){
+                current=current.parent;
+            }
+            if(current.parent!=null&&!current.parent.isSentinal()){
+                return current.parent;
+            }   
+            return null;
+    }
+    public AVLTree getFirst()
+    { 
+        AVLTree current=this.getSent();
+        if(current.right==null){
+            return null;
+        }
+        //checked empty tree condition
+        current=current.right;
+        while(current.left!=null){
+            current=current.left;
+        }
+
+        return current;
+    }
+
+    public AVLTree getNext()
+    { 
+        return this.successor();
+    }
+
+    public static void main(String[] args){
+        AVLTree test = new AVLTree();
+        test.Insert(10 , 10, 10);
+
+        test.Insert(15, 100, 10);
+        test.Insert(1, 100, 5);
+
+        test.Insert(2, 100, 12);
+
+        test.Insert(156, 100, 10);
+             
+        test.Insert(5, 100, 15);
+        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
+        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
+        // }
+        test.Insert(5, 100, 18);
+        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
+        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
+        // }
+        test.Insert(5, 100, 19);
+        // System.out.println("HI");
+        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
+        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
+        // }
+        test.Insert(5, 4, 4);
+        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
+        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
+        // }        
+        test.Insert(5, 4, 3);
+        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
+        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
+        // }  
+        test.Insert(5, 4, 2);
+         test.Insert(5, 4, 1);
+        
+        for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
+            System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
+        }  
     }
 }
 

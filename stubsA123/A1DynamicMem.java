@@ -20,24 +20,24 @@ public class A1DynamicMem extends DynamicMem {
         return ;
     }
     // uncommment this to print contents of the lists
-    // public void printBlk(){
-    //     System.out.print("\nfreeBlk is : ");
-    //     Dictionary first = this.freeBlk.getFirst();
-    //     while(first!=null){
-    //       System.out.print(" ("+first.address+", "+first.size+") ");
-    //       if(this.freeBlk==first) System.out.print(" <-- ");
-    //       first = first.getNext();
-    //     }
+    public void printBlk(){
+        System.out.print("\nfreeBlk is : ");
+        Dictionary first = this.freeBlk.getFirst();
+        while(first!=null){
+          System.out.print(" ("+first.address+", "+first.size+") ");
+          if(this.freeBlk==first) System.out.print(" <-- ");
+          first = first.getNext();
+        }
   
-    //     System.out.print("\nallocBlk is : ");
-    //     first = this.allocBlk.getFirst();
-    //     while(first!=null){
-    //       System.out.print(" ("+first.address+", "+first.size+") ");
-    //       if(this.allocBlk==first) System.out.print(" <-- ");
-    //       first = first.getNext();
-    //     }
-    //     System.out.print("\n");
-    //   }
+        System.out.print("\nallocBlk is : ");
+        first = this.allocBlk.getFirst();
+        while(first!=null){
+          System.out.print(" ("+first.address+", "+first.size+") ");
+          if(this.allocBlk==first) System.out.print(" <-- ");
+          first = first.getNext();
+        }
+        System.out.print("\n");
+      }
 
 
 
