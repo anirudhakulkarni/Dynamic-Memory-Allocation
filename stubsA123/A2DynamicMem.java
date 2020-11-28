@@ -32,6 +32,7 @@ public class A2DynamicMem extends A1DynamicMem {
         }*/
         //System.out.println(this.freeBlk.sanity());
         //System.out.println(this.allocBlk.sanity());
+        //System.out.println("ALLOCATING");
         if(blockSize<=0){
             return -1;
         }

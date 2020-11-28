@@ -92,7 +92,7 @@ public class BSTree extends Tree {
             return true;
         }
         int flag=0;
-        if(this==current.getSent()){
+        if(this!=current.getSent()){//BUG UPDATED
             flag=1;
         }
 

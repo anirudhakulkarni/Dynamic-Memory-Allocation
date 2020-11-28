@@ -10,7 +10,7 @@ public class Driver{
         while(numTestCases-->0){
             int size;
             size = sc.nextInt();
-            A2DynamicMem obj = new A2DynamicMem(size);
+            A2DynamicMem obj = new A2DynamicMem(size,2);
             int numCommands = sc.nextInt();
             //testing purpose
             //int origNum = numCommands;
@@ -20,7 +20,7 @@ public class Driver{
                 command = sc.next();
               /*  if (command.equals("Defragment")){
                     obj.Defragment();
-                    //obj.printBlk();
+                  //obj.printBlk();
                     continue;
                 }*/
                 int argument;
@@ -62,7 +62,7 @@ public class Driver{
             
         }
     long stopTime = System.nanoTime();
-	//System.out.println((stopTime - startTime)/1000000000.0);
+	System.out.println((stopTime - startTime)/1000000000.0);
     }
 
 

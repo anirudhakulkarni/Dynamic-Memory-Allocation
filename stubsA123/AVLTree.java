@@ -1,6 +1,7 @@
+
 // Class: Height balanced AVL Tree
 // Binary Search Tree
-//10.36-
+//10.36-12.45 
 public class AVLTree extends BSTree {
     
     private AVLTree left, right;     // Children. 
@@ -96,11 +97,13 @@ public class AVLTree extends BSTree {
             return new_node;
         }
         updateh(new_node.parent);
+        checkbalance(new_node.parent);
+        return new_node;
         // System.out.println("MC");
         // for (AVLTree d = new_node.getFirst(); d != null; d = d.getNext()){
         //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
         // }
-        AVLTree imbalance=firstub(new_node);
+     /*   AVLTree imbalance=firstub(new_node);
         if(imbalance==null){
             return new_node;
         }
@@ -143,7 +146,7 @@ public class AVLTree extends BSTree {
         }
         return new_node;
 
-        
+        */
 
     }
     public boolean Delete(Dictionary e)
@@ -165,10 +168,10 @@ public class AVLTree extends BSTree {
             return true;
         }
         int flag=0;
-        if(this==current.getSent()){
+        if(this!=current.getSent()){
             flag=1;
         }
-
+//BUG IN BSTREE
         current=current.getSent();
         if(current.right==null){//empty tree
             return false;
@@ -177,15 +180,18 @@ public class AVLTree extends BSTree {
         while(current!=null){
             //System.out.println("-----144");
             if(current.key==e.key&&current.address==e.address && current.size==e.size){
-
+                AVLTree temp;
                 if(flag==1){
-                    current.delHelper(this);
+                    temp= current.delHelper(this);
                 }
                 else{
-                    current.delHelper(null);
+                    temp= current.delHelper(null);
                 }
                 //System.out.println("Printting This right address "+current.right.address+" key"+current.right.key);
-
+                if(temp.isSentinal())return true;
+                //System.out.println(temp.address);
+                updateh(temp);
+                checkbalance(temp);
                 return true;
             }
 
@@ -353,14 +359,33 @@ public class AVLTree extends BSTree {
         return -1;
     }
 
-    private void rebalance(AVLTree node){
-        //if parent is root - if sibling does not exit increment h of p
-        if(node.parent.parent.isSentinal()){
-            node.parent.height=1;
-            return;
+    private void checkbalance(AVLTree node){
+        //System.out.println("check balancing add "+node.address+" key "+node.key);
+        if(getheight(node.left)-getheight(node.right)>1||getheight(node.left)-getheight(node.right)<-1){
+            rebalance(node);
         }
-        //if valid grandparent exits 
-        
+        if(node.parent.isSentinal())return;
+        checkbalance(node.parent);
+    }
+    private void rebalance(AVLTree node){
+        //System.out.println("rebalancing add "+node.address+" key "+node.key);
+        if(getheight(node.left)-getheight(node.right)>1){
+            if(getheight(node.left.left)>getheight(node.left.right)){node=rightrotate(node);}
+            else{
+                node.left=leftrotate(node.left);
+                node=rightrotate(node);
+            }
+        }
+        else{
+            if(getheight(node.right.right)>getheight(node.right.left)){
+                //System.out.println("this is happerning");
+                node=leftrotate(node);
+            }
+            else{
+                node.right=rightrotate(node.right);
+                node=leftrotate(node);
+            }
+        }
         return;
     }
     private AVLTree firstub(AVLTree node){
@@ -397,89 +422,130 @@ public class AVLTree extends BSTree {
         }
         return b;
     }
-    private void rightrotate(AVLTree node){
-        if(node.parent.right==node){
-            node.parent.right=node.left;
-            node.left.parent=node.parent;
+    private AVLTree rightrotate(AVLTree node){
+        // if(node.parent.right==node){
+        //     node.parent.right=node.left;
+        //     node.left.parent=node.parent;
+        // }
+        // else{
+        //     node.parent.left=node.left;
+        //     node.left.parent=node.parent;
+        // }
+        // node.parent=node.left;
+        // if(node.left.right!=null){
+        //     node.left=node.left.right;
+        //     node.left.parent=node;
+        //     node.parent.right=node;
+        //     return ;
+        // }
+        // node.left=null;
+        // node.parent.right=node;
+        AVLTree temp=node.left;
+        if(temp.right!=null){
+            temp.right.parent=node;
+        }
+        node.left=temp.right;
+        temp.right=node;
+        if(node.parent.left==node){
+            node.parent.left=temp;
         }
         else{
-            node.parent.left=node.left;
-            node.left.parent=node.parent;
+            node.parent.right=temp;
         }
-        node.parent=node.left;
-        if(node.left.right!=null){
-            node.left=node.left.right;
-            node.left.parent=node;
-            node.parent.right=node;
-            return;
-        }
-        node.left=null;
-        node.parent.right=node;
-
+        temp.parent=node.parent;
+        node.parent=temp;
+        updateh(node);
+        return temp;
     }
-    private void leftrotate(AVLTree node){
+    private AVLTree leftrotate(AVLTree node){
         //System.out.println("Left rotae called on addres "+node.address);
-        if(node.parent.right==node){
-            node.parent.right=node.right;
-            node.right.parent=node.parent;
+        // if(node.parent.right==node){
+        //     node.parent.right=node.right;
+        //     node.right.parent=node.parent;
+        // }
+        // else{
+        //     node.parent.left=node.right;
+        //     node.right.parent=node.parent;
+        // }
+        // node.parent=node.right;
+        // if(node.right.left!=null){
+        //     node.right=node.right.left;
+        //     node.right.parent=node;
+        //     node.parent.left=node;
+        //     return;
+        // }
+        // node.right=null;
+        // node.parent.left=node;
+        AVLTree temp=node.right;
+        if(temp.left!=null){
+            temp.left.parent=node;
+        }
+        node.right=temp.left;
+        temp.left=node;
+        if(node.parent.left==node){
+            node.parent.left=temp;
         }
         else{
-            node.parent.left=node.right;
-            node.right.parent=node.parent;
+            node.parent.right=temp;
         }
-        node.parent=node.right;
-        if(node.right.left!=null){
-            node.right=node.right.left;
-            node.right.parent=node;
-            node.parent.left=node;
-            return;
-        }
-        node.right=null;
-        node.parent.left=node;
+        temp.parent=node.parent;
+        node.parent=temp;
+        updateh(node);
+        return temp;
 
     }
-    private void delHelper(AVLTree original){
+    private AVLTree leftright(AVLTree node){
+        leftrotate(node.left);
+        return rightrotate(node);
+    }
+    private AVLTree rightleft(AVLTree node){
+        rightrotate(node.right);
+        return leftrotate(node);
+    }
+    private AVLTree delHelper(AVLTree original){
         AVLTree current=this;
         if(current.right==null && current.left==null){
             if(current.parent.right==current){
                 current.parent.right=null;
-                return;
+                return current.parent;
             }
             current.parent.left=null;
-            return;
+            return current.parent;
         }
         //garbage collection will remove it as no pointer to the node exists
         if(current.left==null&&current.right!=null){
             if(current.parent.right==current){
                 current.right.parent=current.parent;
                 current.parent.right=current.right;
-                return;
+                return current.parent;
             }
             current.right.parent=current.parent;
             current.parent.left=current.right;
-            return;         
+            return current.parent;         
         }
         if(current.right==null&&current.left!=null){
             if(current.parent.left==current){
                 current.left.parent=current.parent;
                 current.parent.left=current.left;
-                return;
+                return current.parent;
             }
             current.left.parent=current.parent;
             current.parent.right=current.left;
-            return;            
+            return current.parent;            
         }
         if(current.right!=null && current.left!=null){
             AVLTree suc=current.successor();
+            //System.out.println(suc.address);
             if(original!=null&&suc==original){
                 suc=current.predesessor();
             }
             this.address=suc.address;
             this.key=suc.key;
             this.size=suc.size;
-            suc.delHelper(null);
-            return;
+            return suc.delHelper(null);
+            
         }
+        return this;
     }
     private void delHelperTWS(){
         AVLTree current=this;
@@ -564,6 +630,108 @@ public class AVLTree extends BSTree {
     { 
         return this.successor();
     }
+    private AVLTree findTrue(int key){
+        AVLTree current=this;
+        if(current.key==key && current.left==null){
+            return current;//no need to return smallest. it is the smallest
+        }
+        if(current.key>=key){
+            if(current.predesessor().key!=key){
+                return current;//
+            }
+            return current.left.findTrue(key);
+        }
+        if(current.key<key){
+            while(current.right!=null && current.key<key){
+                current=current.right;
+            }
+            while(current.left!=null && current.left.key>=key){
+                current=current.left;
+            }
+            return current.findTrue(key);//
+        }
+
+
+        return this;
+    }
+    private AVLTree findFalse(int key){
+        AVLTree current= this;
+        if(current.key==key){
+            return current.findTrue(key);
+        }
+        if(current.key>=key && current.left==null){
+            return current;//no need to return smallest. it is the smallest
+        }
+        if(current.key<key){
+            while(current.right!=null && current.key<key){
+                current=current.right;
+            }
+            while(current.left!=null&& current.left.key==key){
+                current=current.left;
+            }
+            return current.findFalse(key);//
+        }
+        if(current.key>=key){
+            if(current.predesessor().key<key){
+                return current;//
+            }
+            return current.left.findFalse(key);
+        }
+
+        return this;
+
+    }
+    public AVLTree Find(int key, boolean exact)
+    { 
+        AVLTree current=this;
+        current=current.getSent();
+        if(current.right==null){//empty tree
+            return null;
+        }
+        current=current.right;
+        if(exact==true){
+            while(current!=null){
+                if(current.key==key){
+                    return current.findTrue(key);
+                    //it is assumed that we are taking key as first preference and address as second preference. Current code will give min key among nodes with equal key.
+                    //replace return curren.findTrue(key); with return current; to get first occurance
+                }
+                if(current.key>key){
+                    current=current.left;
+                    continue;
+                }
+                if(current.key<key){
+                    current=current.right;
+                    continue;
+                }   
+            }
+            return null;
+        }
+        if(exact==false){
+            int flag=0;
+            while(current!=null){
+                if(current.key==key){
+                    return current.findTrue(key);
+                }
+                if(current.key<key){
+                    current=current.right;
+                    continue;
+                }
+                if(current.key>key){
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag==1){
+                return current.findFalse(key);
+                /*more efficient implementation
+                return current.left.findFalse(key);
+                */
+            }
+            return null;
+        }
+        return null;
+    }
 
     public static void main(String[] args){
         AVLTree test = new AVLTree();
@@ -599,7 +767,8 @@ public class AVLTree extends BSTree {
         // }  
         test.Insert(5, 4, 2);
          test.Insert(5, 4, 1);
-        
+         Dictionary e=new AVLTree(156,100,10);
+        test.Delete(e);
         for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
             System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
         }  
