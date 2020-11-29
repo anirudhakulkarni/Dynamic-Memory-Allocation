@@ -1,7 +1,7 @@
 
 // Class: Height balanced AVL Tree
 // Binary Search Tree
-//10.36-12.45 
+//10.36-12.45 12-6 = 8 hrs
 public class AVLTree extends BSTree {
     
     private AVLTree left, right;     // Children. 
@@ -99,7 +99,6 @@ public class AVLTree extends BSTree {
         updateh(new_node.parent);
         checkbalance(new_node.parent);
         return new_node;
-        // System.out.println("MC");
         // for (AVLTree d = new_node.getFirst(); d != null; d = d.getNext()){
         //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
         // }
@@ -208,21 +207,6 @@ public class AVLTree extends BSTree {
         
         return false;
     }
-    // public AVLTree Find(int k, boolean exact)
-    // { 
-    //     return null;
-    // }
-
-    // public AVLTree getFirst()
-    // { 
-    //     return null;
-    // }
-
-    // public AVLTree getNext()
-    // {
-    //     return null;
-    // }
-
     public boolean sanity()
     { 
         if(!this.rootforsanity()){//checks for path to the root
@@ -247,44 +231,44 @@ public class AVLTree extends BSTree {
         return (pccheck(current))&&(bstproperty(current,min, max));
         //pccheck ensures acyclic so that bstproperty can work after it
     }
-    private boolean hbalance(){
-        /*
-        1. checks negative heights
-        2. checks leaf node with height 1
-        3. checks max difference lies between 0 and 1
-        4. returns left height balance and right height balance
-         */
-        if(getheight(this)<0){
-            return false;
-        }
-        if(this.left==null&&this.right==null&&getheight(this)==1){
-            return true;
-        }
-        if(this.left==null&&this.right!=null&&this.right.height<=1){
-            return this.right.hbalance();
-        }
-        if(this.right==null&&this.left!=null&&this.left.height<=1){
-            return this.left.hbalance();
-        }
-        if(this.left!=null&this.right!=null){
-            if(this.left.height>=this.right.height&&this.left.height-this.right.height<=1){
-                return this.right.hbalance()&&this.left.hbalance();
-            }
-            if(this.left.height<this.right.height&&this.right.height-this.left.height<=1){
-                return this.right.hbalance()&&this.left.hbalance();
-            }
-        }
-        return false;
-        /* Alternate code - test it
-        if(getheight(this.left)>=getheight(this.right)&&getheight(this.left)-getheight(this.right)<=1){
-            return true;
-        }
-        if(getheight(this.left)<getheight(this.right)&&getheight(this.right)-getheight(this.left)<=1){
-            return true;
-        }
-        return false;
-        */
-    }
+    // private boolean hbalance(){
+    //     /*
+    //     1. checks negative heights
+    //     2. checks leaf node with height 1
+    //     3. checks max difference lies between 0 and 1
+    //     4. returns left height balance and right height balance
+    //      */
+    //     if(getheight(this)<0){
+    //         return false;
+    //     }
+    //     if(this.left==null&&this.right==null&&getheight(this)==1){
+    //         return true;
+    //     }
+    //     if(this.left==null&&this.right!=null&&this.right.height<=1){
+    //         return this.right.hbalance();
+    //     }
+    //     if(this.right==null&&this.left!=null&&this.left.height<=1){
+    //         return this.left.hbalance();
+    //     }
+    //     if(this.left!=null&this.right!=null){
+    //         if(this.left.height>=this.right.height&&this.left.height-this.right.height<=1){
+    //             return this.right.hbalance()&&this.left.hbalance();
+    //         }
+    //         if(this.left.height<this.right.height&&this.right.height-this.left.height<=1){
+    //             return this.right.hbalance()&&this.left.hbalance();
+    //         }
+    //     }
+    //     return false;
+    //     /* Alternate code - test it
+    //     if(getheight(this.left)>=getheight(this.right)&&getheight(this.left)-getheight(this.right)<=1){
+    //         return true;
+    //     }
+    //     if(getheight(this.left)<getheight(this.right)&&getheight(this.right)-getheight(this.left)<=1){
+    //         return true;
+    //     }
+    //     return false;
+    //     */
+    // }
 
     private boolean rootforsanity(){//floyds like algo
         if(this.parent==null){
@@ -388,16 +372,16 @@ public class AVLTree extends BSTree {
         }
         return;
     }
-    private AVLTree firstub(AVLTree node){
-        if(node.parent.parent.isSentinal()||node.parent.parent==null){
-            return null;
-        }
-        if(abs(getheight(node.parent.parent.right)-getheight(node.parent.parent.left))<=1){
-            return firstub(node.parent);
-        }
-        return node;
+    // private AVLTree firstub(AVLTree node){
+    //     if(node.parent.parent.isSentinal()||node.parent.parent==null){
+    //         return null;
+    //     }
+    //     if(abs(getheight(node.parent.parent.right)-getheight(node.parent.parent.left))<=1){
+    //         return firstub(node.parent);
+    //     }
+    //     return node;
 
-    }
+    // }
     private int abs(int a){
         if(a>0){
             return a;
@@ -494,14 +478,14 @@ public class AVLTree extends BSTree {
         return temp;
 
     }
-    private AVLTree leftright(AVLTree node){
-        leftrotate(node.left);
-        return rightrotate(node);
-    }
-    private AVLTree rightleft(AVLTree node){
-        rightrotate(node.right);
-        return leftrotate(node);
-    }
+    // private AVLTree leftright(AVLTree node){
+    //     leftrotate(node.left);
+    //     return rightrotate(node);
+    // }
+    // private AVLTree rightleft(AVLTree node){
+    //     rightrotate(node.right);
+    //     return leftrotate(node);
+    // }
     private AVLTree delHelper(AVLTree original){
         AVLTree current=this;
         if(current.right==null && current.left==null){
