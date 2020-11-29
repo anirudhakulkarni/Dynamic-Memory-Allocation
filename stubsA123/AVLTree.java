@@ -153,13 +153,17 @@ public class AVLTree extends BSTree {
         AVLTree current=this;
         if(current.key==e.key&&current.address==e.address && current.size==e.size && !current.isSentinal()){
             if(current.successor()!=null){
-                current.delHelperTWS();
+                AVLTree temp= current.delHelperTWS();
+                updateh(temp);
+                checkbalance(temp);
                 return true;
             }
             if(current.predesessor()!=null){
-                current.delHelperTWP();
+                AVLTree temp= current.delHelperTWP();
+                updateh(temp);
+                checkbalance(temp);
                 return true;
-            }
+            }//if both are null then its root node and no other nodes in the tree. hence make it sentinel and delete sentinel
             current.address=-1;
             current.key=-1;
             current.size=-1;
@@ -531,24 +535,24 @@ public class AVLTree extends BSTree {
         }
         return this;
     }
-    private void delHelperTWS(){
+    private AVLTree delHelperTWS(){
         AVLTree current=this;
         AVLTree suc=current.successor();
         this.address=suc.address;
         this.key=suc.key;
         this.size=suc.size;
-        suc.delHelper(null);
-        return;
+        return suc.delHelper(null);
+        
     
     }
-    private void delHelperTWP(){
+    private AVLTree delHelperTWP(){
         AVLTree current=this;
         AVLTree suc=current.predesessor();
         this.address=suc.address;
         this.key=suc.key;
         this.size=suc.size;
-        suc.delHelper(null);
-        return;
+        return suc.delHelper(null);
+        
     
     }
     private AVLTree successor(){
@@ -718,45 +722,40 @@ public class AVLTree extends BSTree {
     }
 
     public static void main(String[] args){
+
         AVLTree test = new AVLTree();
-        test.Insert(10 , 10, 10);
-
-        test.Insert(15, 100, 10);
-        test.Insert(1, 100, 5);
-
-        test.Insert(2, 100, 12);
-
-        test.Insert(156, 100, 10);
-             
-        test.Insert(5, 100, 15);
-        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
-        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
-        // }
-        test.Insert(5, 100, 18);
-        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
-        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
-        // }
-        test.Insert(5, 100, 19);
-        // System.out.println("HI");
-        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
-        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
-        // }
-        test.Insert(5, 4, 4);
-        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
-        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
-        // }        
-        test.Insert(5, 4, 3);
-        // for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
-        //     System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
-        // }  
-        test.Insert(5, 4, 2);
-         test.Insert(5, 4, 1);
-         Dictionary e=new AVLTree(156,100,10);
+        test = test.Insert(10 , 10, 10);
+        test = test.Insert(15, 100, 10);
+        test = test.Insert(1, 100, 5);
+        test = test.Insert(2, 100, 12);
+        test = test.Insert(156, 100, 10);
+        test = test.Insert(5, 100, 15);
+        test = test.Insert(5, 100, 18);
+        test = test.Insert(5, 100, 19);
+        test = test.Insert(5, 4, 4);
+        test = test.Insert(5, 4, 3);
+        test = test.Insert(5, 4, 2);
+        test = test.Insert(5, 4, 1);
+        Dictionary e=new AVLTree(156,100,10);
+        test.Delete(e);
+        test = test.parent.parent.right.left;
+        e = new AVLTree(5,4,4);
+        test.Delete(e);
+        test = test.parent.parent.parent;
+        e = new AVLTree(2,100,12);
+        test.Delete(e);
+        e = new AVLTree(5,100,18);
+        test.Delete(e);
+        e = new AVLTree(10,10,10);
+        test.Delete(e);
+        test = test.right;
+        e = new AVLTree(15,100,10);
         test.Delete(e);
         for (AVLTree d = test.getFirst(); d != null; d = d.getNext()){
             System.out.println(d.address+" "+d.size+" "+d.key+" height "+d.height);
-        }  
-    }
+        }
+        }
+    
 }
 
 
