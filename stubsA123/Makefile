@@ -22,6 +22,11 @@ test60:
 	./runAVL.sh test60.txt aans60_ani.txt
 	rm *.class
 	python compare.py aans60_ani.txt bans60_ani.txt
+test101:
+	javac *.java
+	./runAVL.sh test101.txt aans101_ani.txt
+	rm *.class
+	python compare.py aans101_ani.txt bans101_ani.txt
 gen51:
 	javac *.java
 	./run.sh test51.txt bans51_ani.txt
@@ -34,3 +39,13 @@ gen59:
 gen60:
 	javac *.java
 	./run.sh test60.txt bans60_ani.txt
+gen101:
+	javac *.java
+	./run.sh test101.txt bans101_ani.txt
+testall:
+	make gen60
+	make gen59
+	make gen58
+	make test60
+	make test58
+	make test59

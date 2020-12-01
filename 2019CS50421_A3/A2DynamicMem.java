@@ -30,8 +30,8 @@ public class A2DynamicMem extends A1DynamicMem {
                 return loc.address;
             }
         }*/
-        // System.out.println(this.freeBlk.sanity());
-        // System.out.println(this.allocBlk.sanity());
+        //System.out.println(this.freeBlk.sanity());
+        //System.out.println(this.allocBlk.sanity());
         //System.out.println("ALLOCATING");
         if(blockSize<=0){
             return -1;
@@ -57,8 +57,6 @@ public class A2DynamicMem extends A1DynamicMem {
         return -1;
     } 
     public void Defragment() {
-        // System.out.println(this.freeBlk.sanity());
-        // System.out.println(this.allocBlk.sanity());
         Dictionary tempTree;
         if(this.type==2){
             tempTree=new BSTree();
