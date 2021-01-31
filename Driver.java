@@ -10,7 +10,7 @@ public class Driver{
         while(numTestCases-->0){
             int size;
             size = sc.nextInt();
-            A2DynamicMem obj = new A2DynamicMem(size,2);
+            A1DynamicMem obj = new A1DynamicMem(size,2);
             int numCommands = sc.nextInt();
             //testing purpose
             //int origNum = numCommands;
